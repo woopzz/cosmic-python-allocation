@@ -9,7 +9,7 @@ class OutOfStock(Exception):
 
 @dataclass(frozen=True)
 class OrderLine:
-    order_id: str
+    orderid: str
     sku: str
     qty: int
 
