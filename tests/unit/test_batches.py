@@ -1,6 +1,6 @@
 import datetime as dt
 
-from model import Batch, OrderLine
+from domain.model import Batch, OrderLine
 
 def make_batch_and_line(sku: str, batch_qty: int, line_qty: int):
     batch = Batch('batch-001', sku, batch_qty, eta=dt.date.today())

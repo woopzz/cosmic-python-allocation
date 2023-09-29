@@ -10,7 +10,7 @@ from sqlalchemy.sql import text
 from sqlalchemy.exc import OperationalError
 
 import config
-from orm import start_mappers, mapper_registry
+from adapters.orm import start_mappers, mapper_registry
 
 @pytest.fixture
 def in_memory_db():
@@ -100,6 +100,6 @@ def wait_for_web_app_to_come_up():
 
 @pytest.fixture
 def restart_api():
-    (Path(__file__).parent / 'flask_app.py').touch()
+    (Path(__file__).parent / '../entrypoints/flask_app.py').touch()
     time.sleep(0.5)
     wait_for_web_app_to_come_up()

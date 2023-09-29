@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
-import model
-import repository
+from domain import model
+from adapters import repository
 
 
 class InvalidSku(Exception):

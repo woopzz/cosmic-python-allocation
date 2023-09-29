@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 
-import model
-import repository
+from domain import model
+from adapters import repository
 
 def insert_order_line(session: Session):
     session.execute(text('INSERT INTO order_lines (orderid, sku, qty) VALUES ("order1", "GENERIC-SOFA", 12)'))

@@ -7,6 +7,8 @@ ARG USER_GID=1000
 WORKDIR /code
 COPY . .
 
+ENV PYTHONPATH=$PYTHONPATH:/code
+
 RUN groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
 

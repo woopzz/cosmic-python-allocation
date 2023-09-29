@@ -1,6 +1,6 @@
 import datetime as dt
 
-from model import OutOfStock, Batch, OrderLine, allocate
+from domain.model import OutOfStock, Batch, OrderLine, allocate
 
 import pytest
 
