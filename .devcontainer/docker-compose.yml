@@ -12,9 +12,11 @@ services:
       - POSTGRES_PASSWORD=abc123
 
   allocation:
-    image: python:3.11-bookworm
+    build:
+      context: ..
+      dockerfile: ./.devcontainer/Dockerfile
     volumes:
-      - ..:/workspace
+      - ..:/code
     environment:
       - DB_HOST=postgres
       - DB_PASSWORD=abc123

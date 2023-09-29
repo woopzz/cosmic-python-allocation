@@ -2,8 +2,7 @@
     "name": "Allocation",
     "dockerComposeFile": "docker-compose.yml",
     "service": "allocation",
-    "workspaceFolder": "/workspace",
-    "postCreateCommand": "pip install -r requirements.txt",
+    "workspaceFolder": "/code",
     "shutdownAction": "stopCompose",
     "forwardPorts": [
         5432,
