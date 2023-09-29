@@ -45,6 +45,9 @@ class Batch:
         if line in self._allocations:
             self._allocations.remove(line)
 
+    def __hash__(self):
+        return hash(self.reference)
+
     def __eq__(self, other: Any):
         if not isinstance(other, Batch):
             return False

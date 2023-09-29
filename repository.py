@@ -1,4 +1,5 @@
 import abc
+from typing import List
 
 from sqlalchemy.orm import Session
 
@@ -11,6 +12,9 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
 
     def get(self, reference: str) -> model.Batch:
+        raise NotImplementedError
+
+    def list(self) -> List[model.Batch]:
         raise NotImplementedError
 
 
