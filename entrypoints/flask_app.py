@@ -1,6 +1,6 @@
 import datetime as dt
 
-from flask import Flask, jsonify, request
+from flask import Flask, request
 
 from domain import model
 from adapters import orm
@@ -24,6 +24,6 @@ def allocate_endpoint():
     uow = unit_of_work.SqlAlchemyUnitOfWork()
     try:
         batchref = services.allocate(request.json['orderid'], request.json['sku'], request.json['qty'], uow)
-        return jsonify({'batchref': batchref}), 201
+        return {'batchref': batchref}, 201
     except (model.OutOfStock, services.InvalidSku) as exc:
-        return jsonify({'message': str(exc)}), 400
+        return {'message': str(exc)}, 400
