@@ -60,11 +60,20 @@ class Batch:
             return True
         return self.eta > other.eta
 
-def allocate(line: OrderLine, batches: List[Batch]) -> str:
-    try:
-        batch = next(x for x in sorted(batches) if x.can_allocate(line))
-    except StopIteration:
-        raise OutOfStock(f'SKU {line.sku} is out of stock')
 
-    batch.allocate(line)
-    return batch.reference
+class Product:
+
+    def __init__(self, sku: str, batches: List[Batch], version_number: int = 0):
+        self.sku = sku
+        self.batches = batches
+        self.version_number = version_number
+
+    def allocate(self, line: OrderLine) -> str:
+        try:
+            batch = next(x for x in sorted(self.batches) if x.can_allocate(line))
+        except StopIteration:
+            raise OutOfStock(f'SKU {line.sku} is out of stock')
+
+        batch.allocate(line)
+        self.version_number += 1
+        return batch.reference
