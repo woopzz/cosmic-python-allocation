@@ -1,8 +1,6 @@
 import datetime as dt
 
-from domain import model
-
-import pytest
+from domain import model, events
 
 today = dt.date.today()
 tomorrow = today + dt.timedelta(days=1)
@@ -41,14 +39,15 @@ def test_returns_allocated_batch_ref():
     allocation = product.allocate(line)
     assert allocation == in_stock_batch.reference
 
-def test_raises_out_of_stock_exception_if_cannot_allocate():
+def test_records_out_of_stock_event_if_cannot_allocate():
     batch = model.Batch('batch1', 'SMALL-FORK', 10, eta=today)
     product = model.Product(sku='SMALL-FORK', batches=[batch])
 
     product.allocate(model.OrderLine('order1', 'SMALL-FORK', 10))
 
-    with pytest.raises(model.OutOfStock, match='SMALL-FORK'):
-        product.allocate(model.OrderLine('order2', 'SMALL-FORK', 1))
+    allocation = product.allocate(model.OrderLine('order2', 'SMALL-FORK', 1))
+    assert product.events[-1] == events.OutOfStock('SMALL-FORK')
+    assert allocation is None
 
 def test_increments_version_number():
     batch = model.Batch('b1', 'SCANDI-PEN', 100, eta=None)

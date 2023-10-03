@@ -2,9 +2,7 @@ import datetime as dt
 from typing import Optional, List, Set, Any
 from dataclasses import dataclass
 
-
-class OutOfStock(Exception):
-    pass
+from . import events
 
 
 @dataclass(unsafe_hash=True)
@@ -67,12 +65,14 @@ class Product:
         self.sku = sku
         self.batches = batches
         self.version_number = version_number
+        self.events = []
 
-    def allocate(self, line: OrderLine) -> str:
+    def allocate(self, line: OrderLine) -> str | None:
         try:
             batch = next(x for x in sorted(self.batches) if x.can_allocate(line))
         except StopIteration:
-            raise OutOfStock(f'SKU {line.sku} is out of stock')
+            self.events.append(events.OutOfStock(line.sku))
+            return None
 
         batch.allocate(line)
         self.version_number += 1
