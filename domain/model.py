@@ -2,7 +2,7 @@ import datetime as dt
 from typing import Optional, List, Set, Any
 from dataclasses import dataclass
 
-from . import events
+from . import events, commands
 
 
 @dataclass(unsafe_hash=True)
@@ -86,4 +86,4 @@ class Product:
         batch._purchased_quantity = qty
         while batch.available_quantity < 0:
             line = batch.deallocate_one()
-            self.events.append(events.AllocationRequired(line.orderid, line.sku, line.qty))
+            self.events.append(commands.Allocate(line.orderid, line.sku, line.qty))
