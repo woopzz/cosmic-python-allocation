@@ -10,19 +10,34 @@ services:
     environment:
       - POSTGRES_USER=allocation
       - POSTGRES_PASSWORD=abc123
+    networks:
+      - inside
+
+  redis:
+    image: redis:7.2-bookworm
+    networks:
+      - inside
 
   allocation:
     build:
       context: ..
       dockerfile: ./.devcontainer/Dockerfile
+    depends_on:
+      - postgres
+      - redis
     volumes:
       - ..:/code
     environment:
       - DB_HOST=postgres
       - DB_PASSWORD=abc123
-    network_mode: service:postgres
+      - REDIS_HOST=redis
+    networks:
+      - inside
     tty: true
     command: /bin/bash
 
 volumes:
   postgres-data:
+
+networks:
+  inside:

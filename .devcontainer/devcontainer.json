@@ -6,6 +6,7 @@
     "shutdownAction": "stopCompose",
     "forwardPorts": [
         5432,
+        6379,
         5005
     ],
     "customizations": {

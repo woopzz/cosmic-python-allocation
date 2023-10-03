@@ -1,4 +1,4 @@
-from adapters import email
+from adapters import email, redis_event_publisher
 from domain import model, events, commands
 from . import unit_of_work
 
@@ -38,3 +38,6 @@ def allocate(command: commands.Allocate, uow: unit_of_work.AbstractUnitOfWork) -
 
 def send_out_of_stock_notification(event: events.OutOfStock, uow: unit_of_work.AbstractUnitOfWork):
     email.send_mail(f'Out of stock for {event.sku}')
+
+def publish_allocated_event(event: events.Allocated, uow: unit_of_work.AbstractUnitOfWork):
+    redis_event_publisher.publish('line_allocated', event)

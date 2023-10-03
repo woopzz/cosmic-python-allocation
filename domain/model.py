@@ -79,6 +79,7 @@ class Product:
 
         batch.allocate(line)
         self.version_number += 1
+        self.events.append(events.Allocated(orderid=line.orderid, sku=line.sku, qty=line.qty, batchref=batch.reference))
         return batch.reference
 
     def change_batch_quantity(self, ref: str, qty: int):

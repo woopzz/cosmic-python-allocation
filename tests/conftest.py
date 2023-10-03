@@ -3,11 +3,11 @@ from pathlib import Path
 
 import pytest
 import requests
-from requests.exceptions import ConnectionError
+import redis
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, clear_mappers
 from sqlalchemy.sql import text
-from sqlalchemy.exc import OperationalError
+from tenacity import retry, stop_after_delay
 
 import config
 from adapters.orm import start_mappers, mapper_registry
@@ -28,14 +28,9 @@ def session_factory(in_memory_db):
 def session(session_factory):
     return session_factory()
 
+@retry(stop=stop_after_delay(10))
 def wait_for_postgres_to_come_up(engine):
-    deadline_sec = time.time() + 10
-    while time.time() < deadline_sec:
-        try:
-            return engine.connect()
-        except OperationalError:
-            time.sleep(0.5)
-    pytest.fail('Postgres never came up')
+    return engine.connect()
 
 @pytest.fixture(scope='session')
 def postgres_db():
@@ -96,18 +91,22 @@ def add_stock(postgres_session):
 
     postgres_session.commit()
 
+@retry(stop=stop_after_delay(10))
 def wait_for_web_app_to_come_up():
-    deadline_sec = time.time() + 10
     url = config.get_api_url()
-    while time.time() < deadline_sec:
-        try:
-            return requests.get(url)
-        except ConnectionError:
-            time.sleep(0.5)
-    pytest.fail('API never came up')
+    return requests.get(url)
 
 @pytest.fixture
 def restart_api():
     (Path(__file__).parent / '../entrypoints/flask_app.py').touch()
     time.sleep(0.5)
     wait_for_web_app_to_come_up()
+
+@retry(stop=stop_after_delay(10))
+def wait_for_redis_to_come_up():
+    r = redis.Redis(**config.get_redis_host_and_port())
+    return r.ping()
+
+@pytest.fixture
+def restart_redis_pubsub():
+    wait_for_redis_to_come_up()
