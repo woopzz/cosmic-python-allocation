@@ -43,6 +43,9 @@ class Batch:
         if line in self._allocations:
             self._allocations.remove(line)
 
+    def deallocate_one(self) -> OrderLine:
+        return self._allocations.pop()
+
     def __hash__(self):
         return hash(self.reference)
 
@@ -77,3 +80,10 @@ class Product:
         batch.allocate(line)
         self.version_number += 1
         return batch.reference
+
+    def change_batch_quantity(self, ref: str, qty: int):
+        batch = next(x for x in self.batches if x.reference == ref)
+        batch._purchased_quantity = qty
+        while batch.available_quantity < 0:
+            line = batch.deallocate_one()
+            self.events.append(events.AllocationRequired(line.orderid, line.sku, line.qty))
