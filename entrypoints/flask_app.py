@@ -4,7 +4,7 @@ from flask import Flask, request
 
 from domain import model
 from adapters import orm
-from services import services, unit_of_work
+from service_layer import services, unit_of_work
 
 orm.start_mappers()
 app = Flask(__name__)

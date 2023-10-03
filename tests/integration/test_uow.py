@@ -6,7 +6,7 @@ import pytest
 from sqlalchemy.sql import text
 
 from domain import model
-from services import unit_of_work
+from service_layer import unit_of_work
 from ..random_refs import random_batchref, random_orderid, random_sku
 
 def insert_batch(session, ref, sku, qty, eta, product_version=1):

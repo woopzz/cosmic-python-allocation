@@ -1,8 +1,7 @@
 import pytest
 
-from services import services
+from service_layer import services, unit_of_work
 from adapters import repository
-from services import unit_of_work
 
 
 class FakeRepository(repository.AbstractRepository):

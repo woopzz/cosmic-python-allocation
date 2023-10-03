@@ -2,7 +2,7 @@ import datetime as dt
 from typing import Optional
 
 from domain import model
-from services import unit_of_work
+from . import unit_of_work
 
 
 class InvalidSku(Exception):
