@@ -1,8 +1,8 @@
 import logging
 from typing import Union, List, Dict, Callable, Type
 
-from domain import events, commands
-from . import unit_of_work
+from allocation.domain import events, commands
+from allocation.service_layer import unit_of_work
 
 Message = Union[events.Event, commands.Command]
 

@@ -5,8 +5,8 @@ import threading
 import pytest
 from sqlalchemy.sql import text
 
-from domain import model
-from service_layer import unit_of_work
+from allocation.domain import model
+from allocation.service_layer import unit_of_work
 from ..random_refs import random_batchref, random_orderid, random_sku
 
 pytestmark = pytest.mark.usefixtures('mappers')

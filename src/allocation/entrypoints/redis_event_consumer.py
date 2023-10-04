@@ -3,9 +3,8 @@ import logging
 
 import redis
 
-import config
-import bootstrap
-from domain import commands
+from allocation import config, bootstrap
+from allocation.domain import commands
 
 r = redis.Redis(**config.get_redis_host_and_port())
 

@@ -1,6 +1,6 @@
 import datetime as dt
 
-from domain import model, events
+from allocation.domain import model, events
 
 today = dt.date.today()
 tomorrow = today + dt.timedelta(days=1)

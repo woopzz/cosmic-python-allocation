@@ -2,8 +2,8 @@ import abc
 
 from sqlalchemy.orm import Session
 
-from domain import model
-from . import orm
+from allocation.domain import model
+from allocation.adapters import orm
 
 
 class AbstractRepository(abc.ABC):

@@ -4,8 +4,8 @@ from dataclasses import asdict
 
 import redis
 
-import config
-from domain import events
+from allocation import config
+from allocation.domain import events
 
 r = redis.Redis(**config.get_redis_host_and_port())
 

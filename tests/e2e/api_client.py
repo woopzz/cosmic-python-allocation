@@ -1,6 +1,6 @@
 import requests
 
-import config
+from allocation import config
 
 def post_to_add_batch(ref, sku, qty, eta):
     url = config.get_api_url()

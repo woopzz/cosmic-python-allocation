@@ -3,10 +3,9 @@ import datetime as dt
 import pytest
 from sqlalchemy.orm import clear_mappers
 
-import bootstrap
-import views
-from domain import commands
-from service_layer import unit_of_work, messagebus
+from allocation import views, bootstrap
+from allocation.domain import commands
+from allocation.service_layer import unit_of_work, messagebus
 
 today = dt.date.today()
 

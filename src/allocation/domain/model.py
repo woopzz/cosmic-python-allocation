@@ -2,7 +2,7 @@ import datetime as dt
 from typing import Optional, List, Set, Any
 from dataclasses import dataclass
 
-from . import events, commands
+from allocation.domain import events, commands
 
 
 @dataclass(unsafe_hash=True)

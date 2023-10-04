@@ -1,8 +1,8 @@
 from sqlalchemy.sql import text
 
-from adapters import email, redis_event_publisher
-from domain import model, events, commands
-from . import unit_of_work
+from allocation.adapters import email, redis_event_publisher
+from allocation.domain import model, events, commands
+from allocation.service_layer import unit_of_work
 
 
 class InvalidSku(Exception):

@@ -1,8 +1,8 @@
 #/bin/bash
-FLASK_APP=entrypoints/flask_app.py FLASK_DEBUG=1 PYTHONUNBUFFERED=1 flask run --host=0.0.0.0 --port=5005 &> /dev/null &
+FLASK_APP=./src/allocation/entrypoints/flask_app.py FLASK_DEBUG=1 PYTHONUNBUFFERED=1 flask run --host=0.0.0.0 --port=5005 &> /dev/null &
 flaskpid=$!
 
-python3 entrypoints/redis_event_consumer.py &> /dev/null &
+python3 ./src/allocation/entrypoints/redis_event_consumer.py &> /dev/null &
 redis_event_consumer_pid=$!
 
 pytest

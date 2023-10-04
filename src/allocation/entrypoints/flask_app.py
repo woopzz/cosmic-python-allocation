@@ -2,10 +2,9 @@ import datetime as dt
 
 from flask import Flask, request, jsonify
 
-import views
-import bootstrap
-from service_layer import handlers
-from domain import commands
+from allocation import views, bootstrap
+from allocation.service_layer import handlers
+from allocation.domain import commands
 
 app = Flask(__name__)
 bus = bootstrap.bootstrap()

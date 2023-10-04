@@ -3,10 +3,10 @@ from unittest import mock
 
 import pytest
 
-import bootstrap
-from service_layer import handlers, unit_of_work
-from adapters import repository
-from domain import commands
+from allocation import bootstrap
+from allocation.service_layer import handlers, unit_of_work
+from allocation.adapters import repository
+from allocation.domain import commands
 
 
 class FakeRepository(repository.AbstractRepository):
@@ -89,7 +89,7 @@ class TestAllocate:
         bus = bootstrap_test_app()
         bus.handle(commands.CreateBatch('b1', 'POPULAR-CURTAINS', 9, None))
 
-        with mock.patch('adapters.email.send_mail') as mock_send_mail:
+        with mock.patch('allocation.adapters.email.send_mail') as mock_send_mail:
             bus.handle(commands.Allocate('o1', 'POPULAR-CURTAINS', 10))
             assert mock_send_mail.call_args == mock.call(
                 f'Out of stock for POPULAR-CURTAINS',

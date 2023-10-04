@@ -1,8 +1,8 @@
 import inspect
 from typing import Callable
 
-from service_layer import unit_of_work, messagebus, handlers
-from adapters import redis_event_publisher, orm
+from allocation.service_layer import unit_of_work, messagebus, handlers
+from allocation.adapters import redis_event_publisher, orm
 
 def bootstrap(
     start_orm: bool = True,

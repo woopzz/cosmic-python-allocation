@@ -8,8 +8,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, clear_mappers
 from tenacity import retry, stop_after_delay
 
-import config
-from adapters.orm import start_mappers, mapper_registry
+from allocation import config
+from allocation.adapters.orm import start_mappers, mapper_registry
 
 @pytest.fixture
 def in_memory_db():
@@ -53,7 +53,7 @@ def wait_for_web_app_to_come_up():
 
 @pytest.fixture
 def restart_api():
-    (Path(__file__).parent / '../entrypoints/flask_app.py').touch()
+    (Path(__file__).parent / '../src/allocation/entrypoints/flask_app.py').touch()
     time.sleep(0.5)
     wait_for_web_app_to_come_up()
 
