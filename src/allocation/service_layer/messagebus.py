@@ -1,4 +1,5 @@
 import logging
+from collections import deque
 from typing import Union, List, Dict, Callable, Type
 
 from allocation.domain import events, commands
@@ -22,9 +23,11 @@ class MessageBus:
         self.command_handlers = command_handlers
 
     def handle(self, message: Message):
-        self.queue = [message]
+        self.queue = deque()
+        self.queue.append(message)
+
         while self.queue:
-            message = self.queue.pop(0)
+            message = self.queue.popleft()
             if isinstance(message, events.Event):
                 self.handle_event(message)
             elif isinstance(message, commands.Command):

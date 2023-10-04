@@ -1,6 +1,7 @@
 import datetime as dt
 from typing import Optional, List, Set, Any
 from dataclasses import dataclass
+from collections import deque
 
 from allocation.domain import events, commands
 
@@ -68,7 +69,7 @@ class Product:
         self.sku = sku
         self.batches = batches
         self.version_number = version_number
-        self.events = []
+        self.events = deque()
 
     def allocate(self, line: OrderLine) -> str | None:
         try:

@@ -27,7 +27,7 @@ class AbstractUnitOfWork(abc.ABC):
     def collect_new_events(self):
         for product in self.products.seen:
             while product.events:
-                yield product.events.pop(0)
+                yield product.events.popleft()
 
     @abc.abstractmethod
     def _commit(self):

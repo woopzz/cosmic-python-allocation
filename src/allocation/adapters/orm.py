@@ -1,3 +1,5 @@
+from collections import deque
+
 from sqlalchemy import event, Table, Column, Integer, String, Date, ForeignKey
 from sqlalchemy.orm import registry, relationship
 
@@ -65,4 +67,4 @@ def start_mappers():
 
 @event.listens_for(model.Product, 'load')
 def receive_load(product, _):
-    product.events = []
+    product.events = deque()
