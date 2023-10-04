@@ -5,7 +5,7 @@ import pytest
 
 from service_layer import handlers, unit_of_work, messagebus
 from adapters import repository
-from domain import events, commands
+from domain import commands
 
 
 class FakeRepository(repository.AbstractRepository):
@@ -57,13 +57,14 @@ class TestAddBatch:
 
 class TestAllocate:
 
-    def test_allocate_returns_allocation(self):
+    def test_allocates(self):
         uow = FakeUnitOfWork()
         messagebus.handle(commands.CreateBatch('batch1', 'COMPLICATED-LAMP', 100, None), uow)
-        results = messagebus.handle(commands.Allocate('o1', 'COMPLICATED-LAMP', 10), uow)
-        assert results[0] == 'batch1'
+        messagebus.handle(commands.Allocate('o1', 'COMPLICATED-LAMP', 10), uow)
+        [batch] = uow.products.get('COMPLICATED-LAMP').batches
+        assert batch.available_quantity == 90
 
-    def test_allocate_errors_for_invalid_sku(self):
+    def test_errors_for_invalid_sku(self):
         uow = FakeUnitOfWork()
         messagebus.handle(commands.CreateBatch('b1', 'AREALSKU', 100, None), uow)
 
@@ -74,7 +75,7 @@ class TestAllocate:
         uow = FakeUnitOfWork()
         messagebus.handle(commands.CreateBatch('b1', 'OMINOUS-MIRROR', 100, None), uow)
         messagebus.handle(commands.Allocate('o1', 'OMINOUS-MIRROR', 10), uow)
-        assert uow.committed is True
+        assert uow.committed
 
     def test_sends_email_on_out_of_stock_error(self):
         uow = FakeUnitOfWork()

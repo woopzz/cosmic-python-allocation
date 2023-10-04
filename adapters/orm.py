@@ -38,6 +38,14 @@ products = Table(
     Column('version_number', Integer, nullable=False, server_default='0'),
 )
 
+allocations_view = Table(
+    'allocations_view',
+    mapper_registry.metadata,
+    Column('orderid', String(255)),
+    Column('sku', String(255)),
+    Column('batchref', String(255)),
+)
+
 def start_mappers():
     lines_mapper = mapper_registry.map_imperatively(model.OrderLine, order_lines)
     batches_mapper = mapper_registry.map_imperatively(
