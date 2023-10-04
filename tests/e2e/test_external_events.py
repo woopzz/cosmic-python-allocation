@@ -1,5 +1,4 @@
 import json
-import logging
 
 import pytest
 from tenacity import Retrying, stop_after_delay
@@ -11,16 +10,6 @@ from ..random_refs import random_orderid, random_sku, random_batchref
 @pytest.mark.usefixtures('restart_api')
 @pytest.mark.usefixtures('restart_redis_pubsub')
 def test_change_batch_quantity_leading_to_reallocation():
-    print('---------')
-    print('---------')
-    print('---------')
-    print('---------')
-    print('---------')
-    print('---------')
-    print('---------')
-    print('---------')
-    print('---------')
-    logging.info('WJKFLJSLKFJSLKFJLKDS')
     orderid, sku = random_orderid(), random_sku()
     earlier_batch, later_batch = random_batchref('old'), random_batchref('newer')
     api_client.post_to_add_batch(earlier_batch, sku, qty=10, eta='2011-01-02')
