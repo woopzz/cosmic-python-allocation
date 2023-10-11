@@ -33,3 +33,17 @@ def test_unhappy_path_returns_400_and_error_message():
 
     r = api_client.get_allocation(orderid)
     assert r.status_code == 404
+
+@pytest.mark.usefixtures('postgres_db')
+@pytest.mark.usefixtures('restart_api')
+def test_invalid_command_returns_400_and_error_message_and_details():
+    r = api_client.post('/allocate')
+    assert r.status_code == 400
+    assert r.json()['message'] == 'Invalid request data'
+
+    field_names = set()
+    details = r.json()['details']
+    for each in details:
+        assert each['type'] == 'missing'
+        field_names |= set(each['loc'])
+    assert field_names == set(('orderid', 'qty', 'sku'))
